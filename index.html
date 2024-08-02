@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asben</title>
+    <link rel="stylesheet" href="b.css">
+</head>
+<style>
+    .saben_logo {
+        width: 100px;
+        height: 100px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10002;
+    }
+    .b1 {
+        z-index: 10001;
+    }
+    .section4{
+        z-index: 10001;
+    }
+</style>
+<body>
+    <!-- 初始黑色背景，显示图片 -->
+    <div class="initial-screen">
+        <img src="img/weareasben-t.png" alt="Floating Image" id="img-time">
+    </div>
+
+    <!-- 真正的网页内容 -->
+    <div class="content">
+        <!-- 永远固定在屏幕中心的图片 -->
+        <div class="centered-image">
+            <img src="img/asben_logo-black.png" alt="Center Image" class="asben_logo" id="asben_logo">
+        </div>
+
+        <!-- 第一个板块 -->
+        <section class="section1">
+            <div class="text">
+                <p id="text_black">I'm Asben. You can call me As. Why? no why. This is supposed to be my bio, but I'm too lazy to write it.</p>
+            </div>
+            <div class="image">
+                <img src="img/1.webp" alt="Section 1 Image" class="b1" id="1webp">
+            </div>
+        </section>
+
+        <!-- 第二个板块 -->
+        <section class="section2">
+            <div class="orange-background">
+                
+                
+            </div>
+            <div class="centered-image">
+                
+            </div>
+            <div class="white-background">
+                <div>
+                    <p id="text_F75726">NEW</p>
+                </div>
+                <div>
+                    <img src="img/0.jpg" alt="0" class="img0">
+                </div>
+                <div id="text_F75726_2_div">
+                    <p id="text_F75726_2">The current news is that I made this web page and then became addicted to Ghost Recon Breakpoint. Don't expect my next update. thank you.</p>
+                </div>
+            </div>
+        </section>
+        <!-- 第三个板块 -->
+        <section class="section3">
+            <div class="orange-background2">
+                <p id="text02">WE ARE ASBEN ?</p>
+            </div>
+            <div class="orange-background2" id="text2_div">
+                <p id="text2">Asben is just me and our team is called JeuvpEbAsben. But because JeuvpEbAsben is too long, it is not easy to make the Logo, so I use my name instead.</p>
+                <p id="text22">About me?</p>
+                <div>
+                    <p id="img1">Like to play games, bored will write code.   It's not that I don't have the ability to do a good job, but I don't want to show off.  be looked down upon by others, they will not entrust their hope to you, there is no responsibility, this is what I hope.</p>
+                </div>
+            </div>
+
+
+        </section>
+        <!-- 第四个板块 -->
+        <section class="section4">
+            <div class="black-fullscreen">
+                <!-- 这里可以放足够占满整个浏览器窗口的内容 -->
+            </div>
+        </section>
+    </div>
+    <script>
+        // 监听窗口大小变化事件
+        window.onresize = function() {
+            const textElement = document.getElementById('text');
+            const fontSize = window.innerWidth * 0.04; // 根据窗口宽度计算文字大小
+            textElement.style.fontSize = fontSize + 'px'; // 设置文字大小
+        };
+        
+        // 页面加载时触发一次，确保文字大小正确
+        window.onload = function() {
+            const textElement = document.getElementById('text');
+            const fontSize = window.innerWidth * 0.04; // 根据窗口宽度计算文字大小
+            textElement.style.fontSize = fontSize + 'px'; // 设置文字大小
+        };
+    </script>
+    <script src="open.js"></script>
+</body>
+</html>

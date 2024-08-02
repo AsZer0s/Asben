@@ -1,0 +1,228 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+.initial-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*.initial-screen img {
+    max-width: 100%;
+    max-height: 100%;
+    animation: fadeOut 3s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}*/
+
+.content {
+    display: none;
+}
+
+.centered-image {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10002;
+}
+
+.section1 {
+    
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.section2 {
+    background-color: black;
+    color: black;
+    height: 120vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10003;
+    
+}
+
+.section3 {
+    background-color: white;
+    color: black;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10003;
+}
+.section4 {
+    background-image: url('img/1.webp');
+    color: white;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10001;
+}
+
+.orange-background {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.white-background {
+    text-align: center;
+}
+
+.black-fullscreen {
+    background-color: orange;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+}
+.orange-background2
+{
+    background-color: #F75726;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+}
+.black-fullscreen2 {
+    background-color: #F75726;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+}
+.white-background2 {
+    background-color: #F75726;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+}
+#text {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: white;
+    font-size: 4vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10003;
+    font-family: Secular One;
+}
+#text_F75726 {
+    position: absolute;
+    top: -3vh;
+    left: 3vw;
+    color: #F75726;
+    font-size: 6vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10003;
+    font-family: Secular One;
+}
+#text_F75726_2 {
+    text-align: left;
+    position: absolute;
+    
+    left: 3vw;
+    color: #F75726;
+    font-size: 2.5vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10003;
+    font-family: Secular One;
+}
+#text_black {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #000000;
+    font-size: 4vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10002;
+    font-family: Secular One;
+}
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('SecularOne-Regular.ttf') format('regular'); /* 替换为你的字体文件路径和格式 */
+    /* 可选：可以指定字体的其他属性，例如字体粗细、样式等 */
+}
+.img0 {
+    height: 50%;
+    top: 25vh;
+    right: 10vw;
+    position: absolute;
+    z-index: 10003;
+}
+#text_F75726_2_div{
+    position: absolute;
+    margin-top: 25vh;
+    margin-bottom: 3vh;
+    left: 2vw;
+    height: 10vh;
+    width: 70vw;
+}
+#text2 {
+    position: absolute;
+    top: -3vh;
+    right: 3vw;
+    color: white;
+    text-align: right;
+    font-size: 2vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10003;
+    font-family: Secular One;
+}
+#text02 {
+    position: absolute;
+    top: -3vh;
+    left: 3vw;
+    color: rgb(255, 255, 255);
+    font-size: 6vw; /* 文字大小根据视口宽度调整 */
+    z-index: 10003;
+    font-family: Secular One;
+}
+#text2_div{
+    position: absolute;
+    margin-top: 3vh;
+    margin-bottom: 25vh;
+    right: 2vw;
+    height: 10vh;
+    width: 70vw;
+}
+#text22{
+    position: absolute;
+    margin-top: 25vh;
+    left: -15vw;
+    color: white;
+    font-size: 3vw; /* 文字大小根据视口宽度调整 */
+    font-family: Secular One;
+    z-index: 10004;
+}
+
+#img1{    
+    color: white;
+    font-size: 2vw;
+    bottom: -50vh;
+    left: -15vw;
+    position: absolute;
+    font-family: Secular One;
+}
