@@ -1,43 +1,847 @@
-<!doctype html>
-<html>
-    <head>
-        <title>Asben</title><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <body bgcolor=white>
-        <center>
-            <table cellpadding=10 cellspacing=0>
-                <tbody>
-                    <tr>
-                        <td colspan=2>
-                            <img src=img/ASBEN.png width=800 height=200>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href=ss2.html>
-                                <img src=img/NEWS.png border=0></a>
-                        </td>
-                        <td>
-                            <a href=ss5.html>
-                                <img src=img/TIME.png border=0></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href=https://x.com>
-                                <img src=img/X.png border=0></a>
-                        </td>
-                        <td>
-                            <a href=ss3.html>
-                                <img src=img/ABOUT_US.png border=0></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan=2>
-                            <a href="ss6.html">
-                                <img src=img/DONATE.png border=0></a>
-                        </td>
-                    </tr>
-        </table>
-        </center>
-    </body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Asben - 5年前端工程师 | UI/UX设计师">
+    <title>Asben - 前端工程师 & UI/UX设计师</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        :root {
+            --primary: #00f5ff;
+            --secondary: #ff00ff;
+            --accent: #00ff88;
+            --dark: #0a0a0f;
+            --darker: #050508;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--dark);
+            color: #fff;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 自定义光标 */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10001;
+            transition: transform 0.05s ease;
+        }
+
+        /* 3D场景容器 */
+        #three-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* Canvas背景 */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+        }
+
+        /* 导航栏 */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.5);
+            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        /* 主要内容 */
+        main {
+            position: relative;
+            z-index: 10;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        /* Hero区域 */
+        .hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 900;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            animation: glow 3s ease-in-out infinite;
+            position: relative;
+            z-index: 100;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                filter: drop-shadow(0 0 20px var(--primary));
+            }
+            50% {
+                filter: drop-shadow(0 0 40px var(--secondary));
+            }
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            font-size: 1.2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(0, 245, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(0, 245, 255, 0.8);
+            }
+        }
+
+        /* 3D卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            width: 100%;
+            perspective: 1000px;
+        }
+
+        .card-3d {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 3rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 245, 255, 0.3);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: transform 0.5s;
+        }
+
+        .card-3d:hover::before {
+            transform: rotate(45deg) translate(100%, 100%);
+        }
+
+        .card-3d:hover {
+            transform: translateY(-20px) rotateX(5deg);
+            box-shadow: 0 20px 60px rgba(0, 245, 255, 0.3);
+            border-color: var(--primary);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            margin: 0.5rem;
+            background: rgba(0, 245, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 25px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        /* 粒子文字效果 */
+        .particle-text {
+            font-size: 3rem;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 时间轴 */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--primary);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(20px);
+            box-shadow: 0 10px 40px rgba(0, 245, 255, 0.3);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 2rem;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* 加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-content {
+            text-align: center;
+        }
+
+        .loader-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(0, 245, 255, 0.3);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                letter-spacing: 5px;
+            }
+        }
+
+        /* 滚动条 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 自定义光标 -->
+    <div class="cursor"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- 加载动画 -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div style="color: var(--primary); font-size: 1.5rem; font-weight: 600;">加载中...</div>
+        </div>
+    </div>
+
+    <!-- 3D场景容器 -->
+    <div id="three-container"></div>
+
+    <!-- Canvas背景 -->
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- 导航栏 -->
+    <nav>
+        <div class="logo">ASBEN</div>
+        <ul class="nav-links">
+            <li><a href="#home">首页</a></li>
+            <li><a href="#skills">技能</a></li>
+            <li><a href="#experience">经验</a></li>
+            <li><a href="#features">特点</a></li>
+        </ul>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- Hero区域 -->
+        <section id="home" class="hero">
+            <h1 id="hero-title">ASBEN</h1>
+            <p class="subtitle">5年前端工程师 | UI/UX设计师</p>
+            <div class="hero-badge">微软认证前端开发</div>
+        </section>
+
+        <!-- 核心技能 -->
+        <section id="skills">
+            <div style="width: 100%; max-width: 1400px;">
+                <h2 class="particle-text">核心技能</h2>
+                <div class="cards-container">
+                    <div class="card-3d">
+                        <h3 class="card-title">前端开发</h3>
+                        <div>
+                            <span class="skill-tag">React</span>
+                            <span class="skill-tag">Vue.js</span>
+                            <span class="skill-tag">Angular</span>
+                            <span class="skill-tag">JavaScript</span>
+                            <span class="skill-tag">TypeScript</span>
+                            <span class="skill-tag">HTML5</span>
+                            <span class="skill-tag">CSS3</span>
+                            <span class="skill-tag">Node.js</span>
+                            <span class="skill-tag">Webpack</span>
+                            <span class="skill-tag">Vite</span>
+                            <span class="skill-tag">响应式设计</span>
+                            <span class="skill-tag">移动端开发</span>
+                            <span class="skill-tag">性能优化</span>
+                            <span class="skill-tag">工程化实践</span>
+                        </div>
+                    </div>
+                    <div class="card-3d">
+                        <h3 class="card-title">UI/UX设计</h3>
+                        <div>
+                            <span class="skill-tag">Adobe Illustrator</span>
+                            <span class="skill-tag">Photoshop</span>
+                            <span class="skill-tag">Figma</span>
+                            <span class="skill-tag">视觉设计</span>
+                            <span class="skill-tag">用户体验</span>
+                            <span class="skill-tag">需求分析</span>
+                            <span class="skill-tag">设计规范</span>
+                            <span class="skill-tag">组件库</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 项目经验 -->
+        <section id="experience">
+            <div style="width: 100%; max-width: 1000px;">
+                <h2 class="particle-text">项目经验</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">企业级前端项目</h3>
+                        <p>负责多个大型企业级前端项目的架构设计与开发，确保项目的高质量交付和可维护性。运用现代前端技术栈，构建高性能、可扩展的Web应用。</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">UI/UX设计项目</h3>
+                        <p>主导过多个UI/UX设计项目，通过优化用户体验设计，显著提升产品转化率和用户满意度。从需求分析到设计实现，全程参与产品设计流程。</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">跨部门协作</h3>
+                        <p>具备丰富的跨部门协作经验，能够与产品、后端、测试团队高效配合，推动项目顺利落地。注重沟通效率，确保项目按时高质量交付。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工作特点 -->
+        <section id="features">
+            <div class="cards-container">
+                <div class="card-3d">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; text-align: center;">✨</div>
+                    <h3 class="card-title" style="text-align: center;">注重质量</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.8);">注重代码质量和用户体验，追求卓越的产品表现</p>
+                </div>
+                <div class="card-3d">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; text-align: center;">🚀</div>
+                    <h3 class="card-title" style="text-align: center;">持续学习</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.8);">持续学习新技术，保持技术前沿，拥抱变化</p>
+                </div>
+                <div class="card-3d">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; text-align: center;">🤝</div>
+                    <h3 class="card-title" style="text-align: center;">团队协作</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.8);">具备良好的沟通能力和团队协作精神</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Three.js 库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        // 禁止右键菜单
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁止文本选择
+        document.addEventListener('selectstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁止拖拽
+        document.addEventListener('dragstart', (e) => {
+            e.preventDefault();
+            return false;
+        });
+
+        // 禁止复制、剪切、粘贴快捷键
+        document.addEventListener('keydown', (e) => {
+            // 禁止 Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+A
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'x' || e.key === 'v' || e.key === 'a')) {
+                e.preventDefault();
+                return false;
+            }
+            // 禁止 F12 开发者工具
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // 加载完成后隐藏加载动画
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // 自定义光标
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // 鼠标悬停效果
+        document.querySelectorAll('a, .card-3d, .skill-tag').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.5)';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+            });
+        });
+
+        // Three.js 3D场景
+        let scene, camera, renderer;
+        let particleSystem;
+        let mouse = { x: 0, y: 0 };
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('three-container').appendChild(renderer.domElement);
+
+            // 创建粒子系统
+            const particleCount = 2000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 2000;
+                positions[i + 1] = (Math.random() - 0.5) * 2000;
+                positions[i + 2] = (Math.random() - 0.5) * 2000;
+
+                const color = new THREE.Color();
+                const rand = Math.random();
+                if (rand < 0.33) {
+                    color.setHex(0x00f5ff);
+                } else if (rand < 0.66) {
+                    color.setHex(0xff00ff);
+                } else {
+                    color.setHex(0x00ff88);
+                }
+                colors[i] = color.r;
+                colors[i + 1] = color.g;
+                colors[i + 2] = color.b;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending
+            });
+
+            particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+
+            camera.position.z = 1000;
+
+            // 鼠标交互
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+            });
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // 旋转粒子系统
+            particleSystem.rotation.x += 0.0005;
+            particleSystem.rotation.y += 0.001;
+
+            // 鼠标交互
+            camera.position.x += (mouse.x * 100 - camera.position.x) * 0.05;
+            camera.position.y += (mouse.y * 100 - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        initThree();
+
+        // Canvas 2D 动画背景
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 2;
+                this.speedY = (Math.random() - 0.5) * 2;
+                this.opacity = Math.random() * 0.5 + 0.2;
+                this.color = Math.random() < 0.33 ? '#00f5ff' : 
+                            Math.random() < 0.66 ? '#ff00ff' : '#00ff88';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+            }
+        }
+
+        const canvasParticles = [];
+        for (let i = 0; i < 100; i++) {
+            canvasParticles.push(new Particle());
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < canvasParticles.length; i++) {
+                for (let j = i + 1; j < canvasParticles.length; j++) {
+                    const dx = canvasParticles[i].x - canvasParticles[j].x;
+                    const dy = canvasParticles[i].y - canvasParticles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = canvasParticles[i].color;
+                        ctx.globalAlpha = (150 - distance) / 150 * 0.2;
+        ctx.lineWidth = 1;
+                        ctx.moveTo(canvasParticles[i].x, canvasParticles[i].y);
+                        ctx.lineTo(canvasParticles[j].x, canvasParticles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            canvasParticles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            
+            requestAnimationFrame(animateCanvas);
+        }
+
+        animateCanvas();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            canvasParticles.forEach(p => {
+                if (p.x > canvas.width) p.x = canvas.width;
+                if (p.y > canvas.height) p.y = canvas.height;
+            });
+        });
+
+        // 视差滚动效果
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroTitle = document.getElementById('hero-title');
+            if (heroTitle) {
+                heroTitle.style.transform = `translateY(${scrolled * 0.5}px)`;
+                heroTitle.style.opacity = 1 - scrolled / 500;
+            }
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card-3d, .timeline-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(50px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
 </html>
